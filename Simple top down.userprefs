@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\EnemyMovement.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Waypoints.js">
     <Files>
-      <File FileName="Assets\Code\EnemyMovement.js" Line="33" Column="86" />
-      <File FileName="Assets\Code\Movement.js" Line="1" Column="1" />
-      <File FileName="Assets\Code\Bullet.js" Line="1" Column="1" />
+      <File FileName="Assets\Code\Waypoints.js" Line="4" Column="61" />
+      <File FileName="Assets\Code\EnemyMovement.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

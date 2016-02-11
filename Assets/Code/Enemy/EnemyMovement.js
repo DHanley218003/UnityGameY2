@@ -1,6 +1,8 @@
 ﻿#pragma strict
 // objects (SET IN INSPECTOR!)
 var player:Rigidbody2D; // player object
+// booleans
+var debug:boolean = false;
 // integers
 var speed:int = 5; // enemy speed
 var T:int; // time to intercept
@@ -31,8 +33,8 @@ function predict() // predicts where the player will be
 {
 	playerVelocity = (player.position - playerVelocity) / Time.deltaTime;// gets the players velocity
 	currentVelocity = transform.position - previousPosition; // gets the enemys velocity
-	
-	Debug.DrawRay(player.position, playerVelocity, Color.green); // Players predicted path
+	if(debug)
+		Debug.DrawRay(player.position, playerVelocity, Color.green); // Players predicted path
 	
 	relativeVelocity = playerVelocity - currentVelocity; // gets the relative velocity
 	RVMag = relativeVelocity.magnitude; // need the magnitude of relative velocity for division to get T
@@ -44,18 +46,20 @@ function predict() // predicts where the player will be
 	
 	playerVelocity = player.position; // reset for next time
     previousPosition = transform.position; // reset for next time
+    
+    pAngle = transform.position; // set to enemy position for calculating
+	pAngle =  predictedPosition - pAngle; // gets vector to player
+	 
+	magnitude = pAngle.magnitude; // distance to player
+	normalised = pAngle/magnitude; // normalised vector to player (used to control speed)
+	if(debug)
+	{	
+		Debug.DrawRay(transform.position, pAngle, Color.red); // draws a ray from the current object position to the vector
+		Debug.DrawRay(transform.position, normalised, Color.black); // draws normalised ray of the vector
+	}
 }
 
 function Attack() 
 {
-	 pAngle = transform.position; // set to enemy position for calculating
-	 pAngle =  predictedPosition - pAngle; // gets vector to player
-	 
-	 magnitude = pAngle.magnitude; // distance to player
-	 normalised = pAngle/magnitude; // normalised vector to player (used to control speed)
-	 
-	 Debug.DrawRay(transform.position, pAngle, Color.red); // draws a ray from the current object position to the vector
-	 Debug.DrawRay(transform.position, normalised, Color.black); // draws normalised ray of the vector
-	 
-     transform.position += normalised * speed * Time.deltaTime; // move towards player
+    transform.position += normalised * speed * Time.deltaTime; // move towards player
 }

@@ -46,10 +46,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Code\Bullet.js" />
-     <Compile Include="Assets\Code\EnemyMovement.js" />
-     <Compile Include="Assets\Code\Movement.js" />
-     <Compile Include="Assets\Code\Spawner.js" />
+     <Compile Include="Assets\Code\Enemy\EnemyMovement.js" />
+     <Compile Include="Assets\Code\Enemy\Patrol.js" />
+     <Compile Include="Assets\Code\Enemy\Spawner.js" />
+     <Compile Include="Assets\Code\Enemy\Waypoints.js" />
+     <Compile Include="Assets\Code\Player\Bullet.js" />
+     <Compile Include="Assets\Code\Player\Movement.js" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
