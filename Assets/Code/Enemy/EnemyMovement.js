@@ -21,6 +21,7 @@ function start ()
 {
 	playerVelocity = player.position; // set initlial value for calculations
     previousPosition = transform.position; // set initial value for calculations
+    var Movement : Movement = FindObjectOfType(Movement);
 }
 
 function Update () 
@@ -52,6 +53,11 @@ function predict() // predicts where the player will be
 	 
 	magnitude = pAngle.magnitude; // distance to player
 	normalised = pAngle/magnitude; // normalised vector to player (used to control speed)
+	if (magnitude < 2)
+	{
+		Destroy(this.gameObject);
+		player.GetComponent(Movement).hit();
+	}
 	if(debug)
 	{	
 		Debug.DrawRay(transform.position, pAngle, Color.red); // draws a ray from the current object position to the vector

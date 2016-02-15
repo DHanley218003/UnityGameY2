@@ -6,6 +6,8 @@ var object_pos:Vector3;
 var angle:float;
 var bullet:GameObject;
 var bSpeed:int = 20;
+public var health:int = 100;
+var score:int = 0;
 
 function Update ()
 {
@@ -55,4 +57,17 @@ function shoot()
 		bulletClone.transform.Translate(Vector2.up * bSpeed);
 		bulletClone.name = "Bullet(Clone)";
 	}
+}
+
+function OnGUI()
+{
+	GUI.Label(Rect(10,10,100,20), "Score: " + score.ToString);
+	GUI.Label(Rect(10,20,100,20), "Health: " + health.ToString);
+}
+
+function hit()
+{
+	health -= 25;
+	if(health < 0)
+		Destroy(this.gameObject);
 }
