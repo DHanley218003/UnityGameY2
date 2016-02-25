@@ -1,8 +1,9 @@
 ﻿#pragma strict
 // objects (SET IN INSPECTOR!)
+var rb:GameObject;
 var player:Rigidbody2D; // player object
 // booleans
-var debug:boolean = false;
+var debug:boolean = true;
 // integers
 var speed:int = 5; // enemy speed
 var T:int; // time to intercept
@@ -21,6 +22,8 @@ function start ()
 {
 	playerVelocity = player.position; // set initlial value for calculations
     previousPosition = transform.position; // set initial value for calculations
+    player = GameObject.Find("Guy").GetComponent.<Rigidbody2D>();
+    //player = rb.GetComponent.<Rigidbody2D>();
     var Movement : Movement = FindObjectOfType(Movement);
 }
 

@@ -6,7 +6,7 @@ var object_pos:Vector3;
 var angle:float;
 var bullet:GameObject;
 var bSpeed:int = 20;
-public var health:int = 100;
+var health:int = 100;
 var score:int = 0;
 
 function Update ()
@@ -53,8 +53,8 @@ function shoot()
 	if(Input.GetKeyDown(KeyCode.Space))
 	{
 		var bulletClone:GameObject = Instantiate(bullet, transform.position, transform.rotation);
-		bulletClone.AddComponent.<Rigidbody>();
-		bulletClone.transform.Translate(Vector2.up * bSpeed);
+		bulletClone.transform.Translate(Vector2.up * 2);
+		bulletClone.GetComponent(Rigidbody2D).AddForce(transform.up * 1000);
 		bulletClone.name = "Bullet(Clone)";
 	}
 }

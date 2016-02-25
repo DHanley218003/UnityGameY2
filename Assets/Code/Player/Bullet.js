@@ -6,7 +6,7 @@ var boundingBox:int = 100;
 
 function Start()
 {
-	target = GameObject.Find("Enemy");
+	target = GameObject.Find("Enemy(Clone)");
 }
 
 function Update () 
