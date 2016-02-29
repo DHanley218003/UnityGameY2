@@ -1,44 +1,68 @@
 ﻿#pragma strict
 // objects (SET IN INSPECTOR!)
+var waypoints:GameObject[];
 var rb:GameObject;
-var player:Rigidbody2D; // player object
 // booleans
 var debug:boolean = true;
 // integers
 var speed:int = 5; // enemy speed
+@HideInInspector
 var T:int; // time to intercept
+@HideInInspector
 var RVMag:int; // relative velocity magnitude
+@HideInInspector
 var magnitude:int; // relative distance
+@HideInInspector
+var state:int = 0;
+@HideInInspector
+var tolerence:float = 0.1;
+@HideInInspector
+var patternIndex : int = 0;
 // vectors
+@HideInInspector
 var pAngle:Vector2; // gets vector player
+@HideInInspector
 var normalised:Vector2; // normalised vector to player
+@HideInInspector
 var playerVelocity:Vector2; // players velocity
+@HideInInspector
 var predictedPosition:Vector2; // predicted position of player
+@HideInInspector
 var previousPosition:Vector2; // last position of enemy
+@HideInInspector
 var currentVelocity:Vector2; // current enemy velocity
+@HideInInspector
 var relativeVelocity:Vector2; // relative velocity of enemy to player
+@HideInInspector
+var currentPosition:Vector3;
+@HideInInspector
+var moveVector:Vector3;
 
-function start ()
+
+function Start ()
 {
-	playerVelocity = player.position; // set initlial value for calculations
+	rb = GameObject.Find("Guy");
+	playerVelocity = rb.transform.position; // set initlial value for calculations
     previousPosition = transform.position; // set initial value for calculations
-    player = GameObject.Find("Guy").GetComponent.<Rigidbody2D>();
-    //player = rb.GetComponent.<Rigidbody2D>();
-    var Movement : Movement = FindObjectOfType(Movement);
+	currentPosition = this.transform.position;
 }
 
 function Update () 
 {
+	
 	predict(); // predicts where the player will be
-	Attack(); // moves to predicted location
+	if (state == 0)	
+		Patrol();	
+	else if (state == 1)
+		Attack(); // moves to predicted location
 }
 
 function predict() // predicts where the player will be
 {
-	playerVelocity = (player.position - playerVelocity) / Time.deltaTime;// gets the players velocity
+	playerVelocity = (rb.transform.position - playerVelocity) / Time.deltaTime;// gets the players velocity
 	currentVelocity = transform.position - previousPosition; // gets the enemys velocity
 	if(debug)
-		Debug.DrawRay(player.position, playerVelocity, Color.green); // Players predicted path
+		Debug.DrawRay(rb.transform.position, playerVelocity, Color.green); // Players predicted path
 	
 	relativeVelocity = playerVelocity - currentVelocity; // gets the relative velocity
 	RVMag = relativeVelocity.magnitude; // need the magnitude of relative velocity for division to get T
@@ -46,9 +70,9 @@ function predict() // predicts where the player will be
 	if(magnitude != 0) // prevent divide by 0 errors
 		T = RVMag / magnitude; // Time equals relative velocity divded by relative distance
 	
-	predictedPosition = player.position + playerVelocity * T; // Predicts and goes to the predicted player position
+	predictedPosition = rb.transform.position + playerVelocity * T; // Predicts and goes to the predicted player position
 	
-	playerVelocity = player.position; // reset for next time
+	playerVelocity = rb.transform.position; // reset for next time
     previousPosition = transform.position; // reset for next time
     
     pAngle = transform.position; // set to enemy position for calculating
@@ -56,10 +80,12 @@ function predict() // predicts where the player will be
 	 
 	magnitude = pAngle.magnitude; // distance to player
 	normalised = pAngle/magnitude; // normalised vector to player (used to control speed)
-	if (magnitude < 2)
+	if(magnitude < 20)
+		state = 1;
+	if (magnitude < 3)
 	{
+		GameObject.Find("Main Camera").GetComponent(scoreSheet).hit();
 		Destroy(this.gameObject);
-		player.GetComponent(Movement).hit();
 	}
 	if(debug)
 	{	
@@ -71,4 +97,31 @@ function predict() // predicts where the player will be
 function Attack() 
 {
     transform.position += normalised * speed * Time.deltaTime; // move towards player
+    if(magnitude > 20)
+    	state = 0;
+}
+
+function Patrol()
+{
+	currentPosition = this.transform.position;
+	// Process the current instruction in our control data array
+	moveVector = waypoints[patternIndex].transform.position - currentPosition; // get the vector to the waypoint
+	if(debug)
+		Debug.DrawRay(transform.position, moveVector, Color.black); // confirm it's the right point.
+	magnitude = moveVector.magnitude; // distance to the waypoint
+	
+	if(magnitude != 0) // No one likes to divide by zero!
+		moveVector = moveVector / magnitude;
+	
+	
+	transform.position += moveVector * speed * Time.deltaTime; // move towards waypoint
+	
+	if(magnitude < tolerence * speed * Time.deltaTime) // if distance to waypoint is less than our tolerance, go to next waypoint
+	{
+		patternIndex++;	
+	}
+	if(patternIndex >= waypoints.Length) // out of waypoints, start from beginning
+	{
+		patternIndex = 0;
+	}
 }

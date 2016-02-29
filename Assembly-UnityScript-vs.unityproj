@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Code\Enemy\EnemyMovement.js" />
      <Compile Include="Assets\Code\Enemy\Spawner.js" />
+     <Compile Include="Assets\Code\GUI\scoreSheet.js" />
      <Compile Include="Assets\Code\Player\Bullet.js" />
      <Compile Include="Assets\Code\Player\Movement.js" />
      <Compile Include="Assets\Code\test\patrol.js" />
