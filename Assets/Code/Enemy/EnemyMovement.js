@@ -5,6 +5,7 @@ var rb:GameObject;
 // booleans
 var debug:boolean = true;
 // integers
+var direction:float;
 var speed:int = 5; // enemy speed
 @HideInInspector
 var T:int; // time to intercept
@@ -55,6 +56,18 @@ function Update ()
 		Patrol();	
 	else if (state == 1)
 		Attack(); // moves to predicted location
+		
+	playerVelocity = rb.transform.position; // reset for next time
+    previousPosition = transform.position; // reset for next time
+}
+
+function OnCollisionEnter2D(col:Collision2D)
+{
+	if(col.gameObject == "Guy")
+	{
+		GameObject.Find("Main Camera").GetComponent(scoreSheet).hit();
+		Destroy(this.gameObject);
+	}
 }
 
 function predict() // predicts where the player will be
@@ -72,20 +85,19 @@ function predict() // predicts where the player will be
 	
 	predictedPosition = rb.transform.position + playerVelocity * T; // Predicts and goes to the predicted player position
 	
-	playerVelocity = rb.transform.position; // reset for next time
-    previousPosition = transform.position; // reset for next time
     
     pAngle = transform.position; // set to enemy position for calculating
 	pAngle =  predictedPosition - pAngle; // gets vector to player
-	 
+	
 	magnitude = pAngle.magnitude; // distance to player
-	normalised = pAngle/magnitude; // normalised vector to player (used to control speed)
-	if(magnitude < 20)
-		state = 1;
-	if (magnitude < 3)
+	
+	if(magnitude != 0) 
+		normalised = pAngle/magnitude; // normalised vector to player (used to control speed)
+	direction = Vector2.Angle(normalised, transform.up);
+	if(direction >= -30 && direction <= 30)
 	{
-		GameObject.Find("Main Camera").GetComponent(scoreSheet).hit();
-		Destroy(this.gameObject);
+		if(magnitude < 20)
+			state = 1;
 	}
 	if(debug)
 	{	

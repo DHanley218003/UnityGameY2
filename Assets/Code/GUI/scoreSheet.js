@@ -24,3 +24,8 @@ function hit()
 		Destroy(player);
 	}
 }
+
+function kill()
+{
+	score += 25;
+}
