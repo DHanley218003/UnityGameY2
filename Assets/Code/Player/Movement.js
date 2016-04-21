@@ -6,6 +6,21 @@ var object_pos:Vector3;
 var angle:float;
 var bullet:GameObject;
 var bSpeed:int = 20;
+var ammo:int = 5;
+
+function OnCollisionEnter2D(col:Collision2D)
+{
+	if(col.gameObject == "Health")
+	{
+		GameObject.Find("Main Camera").GetComponent(scoreSheet).heal();
+		Destroy(gameObject.Find("Health"));
+	}
+	else if(col.gameObject == "Ammo")
+	{
+		ammo += 5;
+		Destroy(gameObject.Find("Ammo"));
+	}
+}
 
 function Update ()
 {
@@ -50,9 +65,13 @@ function shoot()
 {
 	if(Input.GetKeyDown(KeyCode.Space))
 	{
-		var bulletClone:GameObject = Instantiate(bullet, transform.position, transform.rotation);
-		bulletClone.transform.Translate(Vector2.up * 2);
-		bulletClone.GetComponent(Rigidbody2D).AddForce(transform.up * 1000);
-		bulletClone.name = "Bullet(Clone)";
+		if(ammo > 0)
+		{
+			var bulletClone:GameObject = Instantiate(bullet, transform.position, transform.rotation);
+			bulletClone.transform.Translate(Vector2.up * 2);
+			bulletClone.GetComponent(Rigidbody2D).AddForce(transform.up * 1000);
+			bulletClone.name = "Bullet(Clone)";
+			ammo--;
+		}
 	}
 }

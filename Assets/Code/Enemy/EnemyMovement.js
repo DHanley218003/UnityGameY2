@@ -63,9 +63,10 @@ function Update ()
 
 function OnCollisionEnter2D(col:Collision2D)
 {
-	if(col.gameObject == "Guy")
+	if(col.gameObject == "Bullet")
 	{
-		GameObject.Find("Main Camera").GetComponent(scoreSheet).hit();
+		GameObject.Find("Main Camera").GetComponent(scoreSheet).kill();
+		Destroy(gameObject.Find("Bullet"));
 		Destroy(this.gameObject);
 	}
 }
@@ -124,14 +125,14 @@ function Patrol()
 	
 	if(magnitude != 0) // No one likes to divide by zero!
 		moveVector = moveVector / magnitude;
-	
-	
-	transform.position += moveVector * speed * Time.deltaTime; // move towards waypoint
-	
+
 	if(magnitude < tolerence * speed * Time.deltaTime) // if distance to waypoint is less than our tolerance, go to next waypoint
 	{
 		patternIndex++;	
 	}
+	
+	transform.position += moveVector * speed * Time.deltaTime; // move towards waypoint
+
 	if(patternIndex >= waypoints.Length) // out of waypoints, start from beginning
 	{
 		patternIndex = 0;

@@ -8,13 +8,3 @@ function Update ()
 		//Destroy(this.gameObject);
 	}
 }
-
-function OnCollisionEnter2D(col:Collision2D)
-{
-	if(col.gameObject.name == "Enemy(Clone)")
-	{
-		Destroy(col.gameObject);
-		GameObject.Find("Main Camera").GetComponent(scoreSheet).kill();
-		Destroy(this.gameObject);
-	}
-}

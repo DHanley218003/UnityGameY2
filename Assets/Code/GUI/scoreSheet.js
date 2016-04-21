@@ -17,7 +17,7 @@ function OnGUI()
 
 function hit()
 {
-	health -= 1;
+	health -= 25;
 	if(health < 0)
 	{
 		var player:GameObject = GameObject.Find("Guy");
@@ -25,6 +25,10 @@ function hit()
 	}
 }
 
+function heal()
+{
+	health = 100;
+}
 function kill()
 {
 	score += 25;
